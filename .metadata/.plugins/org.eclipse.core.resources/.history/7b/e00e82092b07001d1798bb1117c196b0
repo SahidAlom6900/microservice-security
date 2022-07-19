@@ -1,0 +1,58 @@
+package com.technoelevate.kafka.consumer.listener;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Component;
+
+import static com.technoelevate.kafka.consumer.constant.ConsumerConstants.*;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+public class KafkaListeners {
+
+	@Value("${spring.kafka.topic: kafka-topic}")
+	private String topic;
+	
+	@Value("${spring.kafka.partition-id: 1}")
+	private int partitionId;
+	
+	
+
+	@KafkaListener(topics = TOPIC_NAME, groupId = GROUP_ID)
+	void listener(String message) {
+		log.info("Listener [{}]", message);
+	}
+
+	@KafkaListener(topics =  TOPIC_NAMES , groupId = "group-id")
+	void commonListenerForMultipleTopics(String message) {
+		log.info("MultipleTopicListener - [{}]", message);
+	}
+
+	@KafkaListener(topicPartitions = @TopicPartition(topic = "topic", partitionOffsets = {
+			@PartitionOffset(partition = "1", initialOffset = "0") }), groupId = "group-id")
+	void listenToParitionWithOffset(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+			@Header(KafkaHeaders.OFFSET) int offset) {
+		log.info("ListenToPartitionWithOffset [{}] from partition-{} with offset-{}", message, partition, offset);
+	}
+
+	@KafkaListener(topics = "reflectoring-bytes")
+	void listenerForRoutingTemplate(String message) {
+		log.info("RoutingTemplate BytesListener [{}]", message);
+	}
+
+	@KafkaListener(topics = "topic")
+	@SendTo("topic-1")
+	String listenAndReply(String message) {
+		log.info("ListenAndReply [{}]", message);
+		return "This is a reply sent to 'topic-reply' topic after receiving message at 'topic' topic";
+	}
+
+}

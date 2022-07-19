@@ -1,0 +1,15 @@
+package com.technoelevate.kafka.producer.entity;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class Topic {
+	
+	private String topicName;
+	private int partitions;
+	private int replicationFactor;
+	
+
+}

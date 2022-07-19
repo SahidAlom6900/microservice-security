@@ -1,0 +1,18 @@
+package com.technoelevate.auth.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(path = "api/v1/authentication")
+public class AuthController {
+	
+//	@GetMapping("{username}/{password}")
+//	public String generateTocken(@PathVariable(name = "username") String username,@PathVariable(name = "password") String password) {
+////		return jwtUtils.generateJwtToken(username, password);
+//		return "HI";
+//	}
+
+}

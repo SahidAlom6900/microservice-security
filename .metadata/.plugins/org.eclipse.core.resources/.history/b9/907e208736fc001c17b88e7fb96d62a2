@@ -1,0 +1,55 @@
+2022-07-05 13:13:19.427 ERROR 14760 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'logging.level.com.technoelevate.userservice' to org.springframework.boot.logging.LogLevel:
+
+    Property: logging.level.com.technoelevate.userservice
+    Value: info, debug, error
+    Origin: class path resource [application.yml] - 28:23
+    Reason: failed to convert java.lang.String to org.springframework.boot.logging.LogLevel (caused by java.lang.IllegalArgumentException: No enum constant org.springframework.boot.logging.LogLevel.info, debug, error)
+
+Action:
+
+Update your application's configuration. The following values are valid:
+
+    DEBUG
+    ERROR
+    FATAL
+    INFO
+    OFF
+    TRACE
+    WARN
+
+2022-07-05 13:14:58.680 ERROR 3580 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'logging.level.com.technoelevate.userservice' to org.springframework.boot.logging.LogLevel:
+
+    Property: logging.level.com.technoelevate.userservice
+    Value: INFO, DEBUG, ERROR
+    Origin: class path resource [application.yml] - 28:22
+    Reason: failed to convert java.lang.String to org.springframework.boot.logging.LogLevel (caused by java.lang.IllegalArgumentException: No enum constant org.springframework.boot.logging.LogLevel.INFO, DEBUG, ERROR)
+
+Action:
+
+Update your application's configuration. The following values are valid:
+
+    DEBUG
+    ERROR
+    FATAL
+    INFO
+    OFF
+    TRACE
+    WARN
+
+2022-07-05 13:15:13.475  WARN 10796 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning

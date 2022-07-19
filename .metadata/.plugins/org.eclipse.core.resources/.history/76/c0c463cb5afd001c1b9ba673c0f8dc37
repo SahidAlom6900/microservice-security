@@ -1,0 +1,33 @@
+package com.technoelevate.user_service.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.jaas.JaasAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.technoelevate.user_service.filter.CustomAuthorizationFilter;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+
+@Configuration
+public class UserRequestIntercentor implements RequestInterceptor {
+
+//	@Autowired
+	private CustomAuthorizationFilter authorizationFilter=new CustomAuthorizationFilter(null, null)
+
+	@Override
+	public void apply(RequestTemplate template) {
+		final String authorization = HttpHeaders.AUTHORIZATION;
+		String token = authorizationFilter.getToken();
+		System.out.println("RequestInterceptor  :"+token);
+		template.header(authorization, "Bearer " + token);
+	}
+	
+//	public CustomAuthorizationFilter authorizationFilter() {
+//		return new CustomAuthorizationFilter();
+//	}
+
+}

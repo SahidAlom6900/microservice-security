@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "spring.cloud.loadbalancer.ribbon.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cloud.loadbalancer.ribbon.enable'"
+  },
+  {
+    "name": "logging.jackson.mapper.default-view-inclusion",
+    "type": "java.lang.String",
+    "description": "A description for 'logging.jackson.mapper.default-view-inclusion'"
+  }
+]}

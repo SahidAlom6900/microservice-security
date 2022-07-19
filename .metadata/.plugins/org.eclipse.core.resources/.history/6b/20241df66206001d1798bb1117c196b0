@@ -1,0 +1,26 @@
+package com.technoelevate.kafka.producer;
+
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.TopicBuilder;
+
+@SpringBootApplication
+@EnableKafka
+public class KafkaProducerServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(KafkaProducerServiceApplication.class, args);
+	}
+	
+	  @Bean
+	  public NewTopic createTopic() {
+	    return TopicBuilder.name("employee-topic")
+	      .partitions(3)
+	      .replicas(3)
+	      .build();
+	  }
+
+}

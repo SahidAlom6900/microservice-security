@@ -1,0 +1,16 @@
+package com.technoelevate.kafka.producer.service;
+
+import java.util.Collection;
+
+import org.apache.kafka.clients.admin.TopicListing;
+
+import com.technoelevate.kafka.producer.dto.TopicDetailsDto;
+import com.technoelevate.kafka.producer.entity.Topic;
+
+public interface TopicCreationService {
+	public String crateTopic(Topic topic);
+
+	public Collection<TopicListing> getAllTopicWithDesc();
+
+	public TopicDetailsDto getTopicWithDesc(String topicName);
+}

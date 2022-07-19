@@ -1,0 +1,30 @@
+package com.technoelevate.user_service.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+
+import com.technoelevate.user_service.filter.CustomAuthorizationFilter;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+
+@Configuration
+public class UserRequestIntercentor implements RequestInterceptor {
+
+//	@Autowired
+	private CustomAuthorizationFilter authorizationFilter=new CustomAuthorizationFilter();
+
+	@Override
+	public void apply(RequestTemplate template) {
+		final String authorization = HttpHeaders.AUTHORIZATION;
+//		String token = authorizationFilter.getToken();
+		String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJjcmVhdGUiLCJkZWxldGUiLCJlZGl0IiwidXBkYXRlIl0sImlzcyI6IlRlY2hub2VsZXZhdGUgR3JvdXAiLCJzdWIiOiJTYWhpZDc4NiIsImF1ZCI6InlvdSIsImV4cCI6MTY1NzI0ODY1MiwibmJmIjoxNjU3MTYyMjU1LCJpYXQiOjE2NTcxNjIyNTIsImp0aSI6ImY3MDJlOGU1LWEwNDAtNGY5ZC1hZWMyLTUzZGFjNTc4NTUzMiJ9.AEIdhFDH3gRbkfkNh8TGvzivT4IgSbvBUmdzOD-jkoCAnr1AqnHbISV-w8EwbazukfeTwRk0HoAqX8CQgGmDBA";
+		System.out.println("RequestInterceptor  :"+token);
+		template.header(authorization, "Bearer " + token);
+	}
+	
+//	public CustomAuthorizationFilter authorizationFilter() {
+//		return new CustomAuthorizationFilter();
+//	}
+
+}

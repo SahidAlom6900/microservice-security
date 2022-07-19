@@ -1,0 +1,7 @@
+package com.technoelevate.kafka.producer.service;
+
+public interface ProducerService {
+	
+	public String sendMessage(Object message);
+	
+}

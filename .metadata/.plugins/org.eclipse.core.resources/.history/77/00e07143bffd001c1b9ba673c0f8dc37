@@ -1,0 +1,63 @@
+package com.technoelevate.order_service.service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.technoelevate.order_service.dto.ProductDto;
+import com.technoelevate.order_service.entity.Product;
+import com.technoelevate.order_service.feign.UserFeign;
+import com.technoelevate.order_service.repository.ProductRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class OrderServiceImpl implements OrderService {
+
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Autowired
+	private UserFeign userFeign;
+
+	@Override
+	public List<Product> addOrUpdateProduct(List<ProductDto> productDtos) {
+		log.info("===Inside Order Servive===");
+		List<Product> products = productDtos.isEmpty() ? Collections.emptyList()
+				: productDtos.stream().map(productdto -> {
+					Product product = Product.builder().build();
+					BeanUtils.copyProperties(productdto, product);
+					return product;
+				}).collect(Collectors.toList());
+		if (products.isEmpty())
+			return products;
+		log.info("===Save Order===");
+		return productRepository.saveAll(products);
+	}
+
+	@Override
+	public Product getProduct(Long id) {
+		log.info("===Fatch Order With Id :" + id);
+		return productRepository.findById(id).orElseThrow(IllegalStateException::new);
+	}
+
+	@Override
+	public List<Product> getAllProduct() {
+		log.info("===Fatch All Product!!!===");
+		return productRepository.findAll();
+	}
+
+	@Override
+	public Product deleteProduct(Long productId) {
+		log.info("===Fatch Order With Id :" + productId);
+		Product product = productRepository.findById(productId).orElseThrow(IllegalStateException::new);
+		productRepository.delete(product);
+		return product;
+	}
+
+}

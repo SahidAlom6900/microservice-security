@@ -1,0 +1,69 @@
+package com.technoelevate.kafka.producer.service;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.admin.TopicDescription;
+import org.apache.kafka.common.Node;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+
+import com.technoelevate.kafka.producer.dto.EmployeeDto;
+import com.technoelevate.kafka.producer.dto.TopicDescDto;
+import com.technoelevate.kafka.producer.dto.TopicDetailsDto;
+import com.technoelevate.kafka.producer.entity.Topic;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+public class ProducerServiceImpl implements ProducerService {
+
+	@Autowired
+	private KafkaTemplate<String, Object> kafkaTemplate;
+	
+	private String msgLog;
+
+	@Override
+	public String sendMessage(Object message) {
+		int key = ThreadLocalRandom.current().nextInt(100000, 1000000);
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		ListenableFuture<SendResult<String, Object>> listenableFuture = kafkaTemplate.send("employee-topic001", 1,
+				timestamp.getTime(), ""+key, message);
+		// topicName,partition,long time,key and object //
+
+		listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+			@Override
+			public void onSuccess(SendResult<String, Object> result) {
+				log.info("message sent, partition={}, offset={}", result.getRecordMetadata().partition(),
+						result.getRecordMetadata().offset());
+				msgLog="message sent, partition={} :"+ result.getRecordMetadata().partition()+" , offset={} :"+result.getRecordMetadata().offset();
+			}
+
+			@Override
+			public void onFailure(Throwable throwable) {
+				log.warn("failed to send, message={}", message, throwable);
+				msgLog="failed to send, message={} :"+ message+"  "+ throwable.getMessage();
+			}
+		});
+		return msgLog;
+	}
+}

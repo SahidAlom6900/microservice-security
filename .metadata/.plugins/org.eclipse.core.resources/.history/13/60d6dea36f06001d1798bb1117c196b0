@@ -1,0 +1,52 @@
+#server:
+#  port: 9090
+#spring:
+#  kafka:
+#    consumer:
+#      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+#      group-id: group-id
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      
+#      
+#    producer:
+#      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringDeserializer
+spring:
+    kafka:
+      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+      consumer:
+        group-id: foo
+        auto-offset-reset: latest
+        key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2
+        value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2
+        properties:
+          spring.json.trusted.packages: com.teramedica.kafakaex001web.model
+          spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+          spring.deserializer.value.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      streams:
+        application-id: kafka9000-v0.1
+        properties: # properties not explicitly handled by KafkaProperties.streams
+          default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+          spring.json.trusted.packages: com.teramedica.kafakaex001web.model
+  
+
+
+#consumer:
+#    group-id: foo
+#    auto-offset-reset: latest
+#    key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2
+#    value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2
+#    properties:
+#      spring.json.trusted.packages: com.teramedica.kafakaex001web.model
+#      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+#      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+#  producer:
+#    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

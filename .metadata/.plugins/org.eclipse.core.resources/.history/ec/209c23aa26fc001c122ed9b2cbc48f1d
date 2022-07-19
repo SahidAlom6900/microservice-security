@@ -1,0 +1,19 @@
+package com.technoelevate.user_service.service;
+
+import java.util.List;
+
+import com.technoelevate.user_service.dto.RoleDto;
+
+public interface RoleService {
+
+	public RoleDto create(RoleDto RoleDto) ;
+	
+	public RoleDto update(RoleDto RoleDto) ;
+
+	public RoleDto getRole(Long empId);
+
+	public boolean delete(Long empId) ;
+
+	public List<RoleDto> getAllRole() ;
+
+}

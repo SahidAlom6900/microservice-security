@@ -1,0 +1,5 @@
+package com.technoelevate.order_service.exception1;
+
+public class UserException {
+
+}

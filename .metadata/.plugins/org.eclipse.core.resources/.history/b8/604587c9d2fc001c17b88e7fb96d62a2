@@ -1,0 +1,4 @@
+# App Properties
+auth.app:
+    jwt-secret: qwertyqwertyqwertyqwertyqwertyqwerty
+    jwt-expiration-ms: 86400000

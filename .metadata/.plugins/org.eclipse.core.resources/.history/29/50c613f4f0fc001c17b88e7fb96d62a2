@@ -1,0 +1,10 @@
+package com.technoelevate.auth_service.exception;
+
+@SuppressWarnings("serial")
+public class DoctorInvalidDetailsException extends RuntimeException {
+	
+	public DoctorInvalidDetailsException(String message) {
+		super(message);
+	}
+
+}

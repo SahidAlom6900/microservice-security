@@ -1,0 +1,54 @@
+server:
+  port: 8399
+
+spring:
+  
+  zipkin:
+     base-url: http://localhost:9411/zipkin/
+  
+  application:
+    name: AUTH-SERVICE
+  config:
+    import: "optional:configserver:"   
+    
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_servive?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        format-sql: true
+        dialect : org.hibernate.dialect.MySQL5InnoDBDialect 
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
+
+# App Properties
+auth.app:
+    jwt-secret: qwerty
+    jwt-expiration-ms: 86400000 #24*60*60*1000
+    jwt-refresh-ms: 1296000000  #15*24*60*60*1000
+    jwt-not-before-ms: 3000     #3*1000
+    
+    
+logging:
+#  pattern:
+#    file: %d [%thread] %cyan(%logger{15}) - %msg %n
+  file:
+    name: C:/Users/User/Documents/LogFile/auth-service-log.log 
+  level:
+    root: WARN
+    org:
+      hibernate: ERROR   
+    com:
+      technoelevate:
+        auth: INFO    
+    
+    
+    
+    
+    
+    

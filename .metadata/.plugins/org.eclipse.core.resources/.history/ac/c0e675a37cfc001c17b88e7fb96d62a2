@@ -1,0 +1,3 @@
+feign.compression.request.enabled=true
+feign.compression.response.enabled=true
+logging.level.project.user.UserClient: DEBUG

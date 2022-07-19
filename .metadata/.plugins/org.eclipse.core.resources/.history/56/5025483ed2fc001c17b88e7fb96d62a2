@@ -1,0 +1,4 @@
+# App Properties
+auth.app:
+    jwt-secret: bezKoderSecretKey
+    jwt-expiration-ms: 86400000

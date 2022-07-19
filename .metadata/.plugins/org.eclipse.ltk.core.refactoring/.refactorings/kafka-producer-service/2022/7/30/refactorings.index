@@ -1,0 +1,16 @@
+1658051863861	Copy package
+1658121624935	Copy package
+1658121651613	Rename type 'KafkaProducerConfig'
+1658123331354	Rename package 'com.technoelevate.kafka.consumer.dto'
+1658124416048	Delete element
+1658124512342	Copy package
+1658148237219	Rename type 'TopicDto'
+1658148548852	Rename type 'TopicDescDto'
+1658148556312	Rename type 'TopicDesc'
+1658154441043	Copy package
+1658154479771	Rename type 'Topic'
+1658200959801	Copy compilation unit
+1658201051236	Copy compilation units
+1658207628722	Copy compilation unit
+1658210969444	Rename type 'AppConstants'
+1658229375769	Rename type 'ConsumerConstants'

@@ -1,0 +1,74 @@
+package com.technoelevate.order_service.service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import com.technoelevate.order_service.dto.OrderDto;
+import com.technoelevate.order_service.entity.Order;
+import com.technoelevate.order_service.repository.OrderRepository;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class OrderServiceImpl implements OrderService {
+
+	private OrderRepository orderRepository;
+
+	private Order createOrder(OrderDto roderDto) {
+		Order order = Order.builder().build();
+		BeanUtils.copyProperties(roderDto == null ? OrderDto.builder().build() : roderDto, order);
+		order.setTotalPrice(order.getUnitPrice() * order.getQuentity() * (100 - order.getDiscount()) / 100);
+		return order;
+	}
+
+	@Override
+	public List<Order> genarateOrder(List<OrderDto> orderDtos) {
+//		long orderId = setOrderId();
+		List<Order> orders = orderDtos.isEmpty() ? Collections.emptyList() : orderDtos.stream().map(orderDto -> {
+//			orderDto.setOrderId(orderId);
+			return createOrder(orderDto);
+		}).collect(Collectors.toList());
+//		orderRepository.saveAll(orders);
+		return orderRepository.saveAll(orders);
+	}
+
+	@Override
+	public Order deleteOne(Long id) {
+		Order order = orderRepository.findById(id).orElseThrow(IllegalStateException::new);
+		orderRepository.delete(order);
+		return order;
+	}
+
+	@Override
+	public Order getOrder(Long id) {
+		return orderRepository.findById(id).orElseThrow(IllegalStateException::new);
+	}
+
+	@Override
+	public List<Order> getAllOrder(Long orderId) {
+		return orderRepository.findByOrderId(orderId).orElseThrow(IllegalStateException::new);
+	}
+
+	@Override
+	public List<Order> deleteUserOrder(Long orderId) {
+		List<Order> orders = orderRepository.findByOrderId(orderId).orElseThrow(IllegalStateException::new);
+		orderRepository.deleteAll(orders);
+		return orders;
+	}
+
+//	private Long setOrderId() {
+//		List<Long> orders = orderRepository.findAll().stream().map(Order::getOrderId).collect(Collectors.toList());
+//		long orderId = ThreadLocalRandom.current().nextLong(10000000, 1000000000);
+//		while (orders.contains(orderId)) {
+//			orderId = ThreadLocalRandom.current().nextLong(10000000, 1000000000);
+//		}
+//		return orderId;
+//	}
+
+}

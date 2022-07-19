@@ -1,0 +1,20 @@
+package com.technoelevate.order_service.service;
+
+import java.util.List;
+
+import com.technoelevate.order_service.dto.OrderDto;
+import com.technoelevate.order_service.entity.Order;
+
+public interface OderService {
+
+	public Order createOrUpdate(OrderDto orderDto);
+	
+	public Order deleteOne(Long id) ;
+	
+	public List<Order> delete(Long orderId) ;
+	
+	public Order getUser(Long deptId);
+	
+	public List<Order> getAllUser();
+
+}

@@ -1,0 +1,59 @@
+package com.technoelevate.user_service.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.user_service.dto.RoleDto;
+import com.technoelevate.user_service.response.UserResponse;
+import com.technoelevate.user_service.service.RoleService;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping(value = "/api/v1")
+@AllArgsConstructor
+public class RoleController {
+
+	private final RoleService roleService;
+
+	@PostMapping("employee")
+	public ResponseEntity<UserResponse> createEmployee(@RequestBody RoleDto employeeDto) {
+		return ResponseEntity.ok().body(
+				UserResponse.builder().error(false).message("").data(roleService.create(employeeDto)).build());
+
+	}
+
+	@GetMapping("employee/{empId}")
+	public ResponseEntity<UserResponse> getEmployee(@PathVariable(name = "empId") Long empId) {
+		return ResponseEntity.ok().body(
+				UserResponse.builder().error(false).message("").data(roleService.getRole(empId)).build());
+
+	}
+
+	@PutMapping("employee")
+	public ResponseEntity<UserResponse> updateEmployee(
+			@RequestBody RoleDto employeeDto) {
+		return ResponseEntity.ok().body(UserResponse.builder().error(false).message("")
+				.data(roleService.update( employeeDto)).build());
+	}
+
+	@DeleteMapping(value = "/employee/{empId}")
+	public ResponseEntity<UserResponse> deleteEmployee(@PathVariable(name = "empId") Long empId) {
+		return ResponseEntity.ok()
+				.body(UserResponse.builder().error(false).message("").data(roleService.delete(empId)).build());
+	}
+
+	@GetMapping(value = "/employees")
+	public ResponseEntity<UserResponse> getAllEmployee() {
+		return ResponseEntity.ok().body(
+				UserResponse.builder().error(false).message("").data(roleService.getAllRole()).build());
+	}
+
+}

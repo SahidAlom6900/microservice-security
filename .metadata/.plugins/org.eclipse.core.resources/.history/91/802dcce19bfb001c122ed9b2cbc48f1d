@@ -1,0 +1,15 @@
+package com.technoelevate.user_service.service;
+
+import com.technoelevate.user_service.repository.PermissionRepository;
+import com.technoelevate.user_service.repository.RoleRepository;
+import com.technoelevate.user_service.repository.UserRepository;
+
+public class PermissionServiceImpl implements PermissionService {
+	
+	private RoleRepository roleRepository;
+
+	private UserRepository userRepository;
+	
+	private PermissionRepository permissionRepository;
+
+}

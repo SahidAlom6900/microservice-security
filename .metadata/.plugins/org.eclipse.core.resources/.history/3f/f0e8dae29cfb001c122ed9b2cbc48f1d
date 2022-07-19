@@ -1,0 +1,32 @@
+package com.technoelevate.user_service.dto;
+
+import java.io.Serializable;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.technoelevate.user_service.entity.Role;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@SuppressWarnings("serial")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@JsonInclude(value = Include.NON_DEFAULT)
+public class PermissionDto implements Serializable {
+
+	private Long permissionId;
+
+	private Long permissionName;
+
+	private Role role;
+}

@@ -1,0 +1,71 @@
+package com.technoelevate.inventory.controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.inventory.dto.ProductDto;
+import com.technoelevate.inventory.response.ProductResponse;
+import com.technoelevate.inventory.service.OrderService;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping(value = "/api/v1")
+@AllArgsConstructor
+public class ProductController {
+
+	private final OrderService userService;
+
+	@PreAuthorize("hasAnyAuthority('create','update')")
+	@PostMapping(path = "product")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<ProductResponse> addOrUpdateProduct(@RequestBody List<ProductDto> orderDtos) {
+		return ResponseEntity.ok(ProductResponse.builder().error(false).message("")
+				.data(userService.addOrUpdateProduct(orderDtos)).build());
+	}
+
+	@PreAuthorize("hasAuthority('read')")
+	@GetMapping(path = "product/{productId}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<ProductResponse> getProduct(@PathVariable(name = "productId") Long productId) {
+		return ResponseEntity
+				.ok(ProductResponse.builder().error(false).message("").data(userService.getProduct(productId)).build());
+	}
+
+	@PreAuthorize("hasAuthority('read')")
+	@GetMapping(path = "products")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<ProductResponse> getAllProduct() {
+		return ResponseEntity
+				.ok(ProductResponse.builder().error(false).message("").data(userService.getAllProduct()).build());
+	}
+
+	@PreAuthorize("hasAuthority('delete')")
+	@DeleteMapping(path = "product/{productId}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<ProductResponse> deleteProduct(@PathVariable(name = "productId") Long productId) {
+		return ResponseEntity.ok(
+				ProductResponse.builder().error(false).message("").data(userService.deleteProduct(productId)).build());
+	}
+
+	@PreAuthorize("hasAuthority('read')")
+	@GetMapping(path = "product/{productId}/{quentity}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<ProductResponse> orderProduct(@PathVariable(name = "productId") Long productId,
+			@PathVariable(name = "quentity") Long quentity) {
+		return ResponseEntity.ok(ProductResponse.builder().error(false).message("")
+				.data(userService.orderProduct(productId, quentity)).build());
+	}
+
+}

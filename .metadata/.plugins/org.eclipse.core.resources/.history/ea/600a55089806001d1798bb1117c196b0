@@ -1,0 +1,17 @@
+package com.technoelevate.kafka.producer.dto;
+
+import java.util.List;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class TopicDesc {
+	
+	private int partition;
+	private int leader;
+	private List<String> replicas;
+	private List<String> isr;
+
+}

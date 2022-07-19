@@ -1,0 +1,18 @@
+package com.technoelevate.user_service.service;
+
+import java.util.List;
+
+import com.technoelevate.user_service.dto.PermissionDto;
+
+public interface PermissionService {
+	
+	public PermissionDto create(PermissionDto permissionDto);
+
+	public PermissionDto update(PermissionDto permissionDto);
+
+	public PermissionDto getPermission(Long empId);
+
+	public boolean delete(Long empId);
+
+	public List<PermissionDto> getAllPermission();
+}

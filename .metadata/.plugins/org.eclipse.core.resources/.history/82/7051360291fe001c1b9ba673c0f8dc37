@@ -1,0 +1,74 @@
+server:
+  port: 9595
+  
+spring:
+  application:
+    name: api-gateway-server
+  config:
+    import: "optional:configserver:"
+    
+    
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: USER-SERVICE
+        uri: lb://USER-SERVICE/
+        predicates:
+        - Path=/api/v1/user/**
+        filters:
+            - RewritePath=/api/v1/user/\\(?.*), /$\{path}
+#            - name: CircuitBreaker
+#              args:
+#                name: user-service
+#                fallbackuri: forward:/userFallBack/user
+
+      - id: ORDER-SERVICE
+        uri: lb://ORDER-SERVICE/
+        predicates:
+        - Path=/api/v1/order/**
+        filters:
+#            - RewritePath=/api/v1/user/(?<path>/?.*), /${path}
+#            - name: CircuitBreaker
+#              args:
+#                name: user-service
+#                fallbackuri: forward:/userFallBack/user    
+
+      - id: INVENTORY-SERVICE
+        uri: lb://INVENTORY-SERVICE/
+        predicates:
+        - Path=/api/v1/product/**
+        filters:
+#            - RewritePath=/api/v1/user/(?<path>/?.*), /${path}
+#            - name: CircuitBreaker
+#              args:
+#                name: user-service
+#                fallbackuri: forward:/userFallBack/user 
+
+      - id: AUTH-SERVICE
+        uri: lb://AUTH-SERVICE/
+        predicates:
+        - Path=/api/v1/auth
+        filters:
+#            - RewritePath=/api/v1/auth/(?.*), /$\{path}
+#            - name: CircuitBreaker
+#              args:
+#                name: user-service
+#                fallbackuri: forward:/userFallBack/user 
+
+
+    
+logging:
+#  pattern:
+#    file: %d [%thread] %cyan(%logger{15}) - %msg %n
+  file:
+    name: C:/Users/User/Documents/LogFile/auth-service-log.log 
+  level:
+    root: WARN
+    org:
+      hibernate: ERROR   
+    com:
+      technoelevate:
+        gateway: INFO    

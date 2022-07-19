@@ -1,0 +1,17 @@
+package com.technoelevate.inventory;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@EnableEurekaClient
+@ComponentScan(basePackages = {"com.technoelevate.inventory.util","com.technoelevate.inventory.feign","com.technoelevate.inventory.exception","com.technoelevate.inventory.filter","com.technoelevate.inventory.*"})
+public class InventoryServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(InventoryServiceApplication.class, args);
+	}
+
+}

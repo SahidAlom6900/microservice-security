@@ -1,0 +1,51 @@
+package com.technoelevate.order_service.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.technoelevate.order_service.dto.OrderDto;
+import com.technoelevate.order_service.entity.Product;
+import com.technoelevate.order_service.feign.UserFeign;
+import com.technoelevate.order_service.repository.OrderRepository;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@AllArgsConstructor
+public class OrderServiceImpl implements OrderService {
+
+	private OrderRepository orderRepository;
+
+	private UserFeign userFeign;
+
+//	private String username="Sahid786";
+
+	@Override
+	public List<Product> addOrUpdateProduct(List<OrderDto> orderDtos) {
+		log.info("===Inside Order Servive===");
+
+		log.info("===Save Order===");
+		return orderRepository.saveAll(null);
+	}
+
+	@Override
+	public Product getProduct(Long id) {
+		log.info("===Fatch Order With Id :" + id);
+		return orderRepository.findById(id).orElseThrow(IllegalStateException::new);
+	}
+
+	@Override
+	public List<Product> getAllProduct(Long orderId) {
+		log.info("===Fatch All Order With Order Id :" + orderId);
+		return orderRepository.findAll();
+	}
+
+	@Override
+	public Product deleteProduct(Long deptId) {
+		return null;
+	}
+
+}

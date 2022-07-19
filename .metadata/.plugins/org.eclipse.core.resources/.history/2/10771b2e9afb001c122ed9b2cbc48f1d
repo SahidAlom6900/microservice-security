@@ -1,0 +1,19 @@
+package com.technoelevate.user_service.service;
+
+import java.util.List;
+
+import com.technoelevate.user_service.dto.UserDto;
+
+public interface User1Service {
+
+	public UserDto create(UserDto departmentDto);
+	
+	public UserDto update(UserDto departmentDto);
+	
+	public UserDto delete(Long deptId) ;
+	
+	public UserDto getDepartment(Long deptId);
+	
+	public List<UserDto> getAllDepartment();
+
+}

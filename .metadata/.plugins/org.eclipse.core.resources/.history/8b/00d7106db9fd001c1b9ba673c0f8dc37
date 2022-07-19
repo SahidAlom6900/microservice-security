@@ -1,0 +1,21 @@
+package com.technoelevate.order_service.service;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import com.technoelevate.order_service.dto.OrderDto;
+import com.technoelevate.order_service.entity.Product;
+import com.technoelevate.order_service.response.RoleResponse;
+
+public interface OrderService {
+
+	public List<Product> genarateOrder(List<OrderDto> orderDtos);
+	
+	public Product getOrder(Long deptId);
+	
+	public List<Product> getAllOrder(Long orderId);
+	
+	ResponseEntity<RoleResponse> test();
+	
+}

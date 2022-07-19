@@ -1,0 +1,31 @@
+package com.technoelevate.user_service.config;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.jaas.JaasAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+
+public class UserRequestIntercentor implements RequestInterceptor {
+
+	@Override
+  public void apply(RequestTemplate template) {
+      final String authorization = HttpHeaders.AUTHORIZATION;
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      
+//      if (authentication instanceof JaasAuthenticationToken){
+//          JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
+//      authentication.ge
+      
+//      String tokenValue = jwtAuthenticationToken.getToken().getTokenValue();
+//          template.header(authorization,"Bearer "+tokenValue);
+      }
+  }
+
+//	@Bean
+//	public RequestInterceptor requestInterceptor() {
+//		
+//	}
+}

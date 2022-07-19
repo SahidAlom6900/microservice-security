@@ -1,0 +1,41 @@
+1656934272844	Delete elements
+1657004975344	Rename package 'com.technoelevate.user_service.constant'
+1657004990065	Rename package 'com.technoelevate.user_service.controller'
+1657005004610	Rename package 'com.technoelevate.user_service.dto'
+1657005019119	Rename package 'com.technoelevate.user_service.entity'
+1657005031985	Rename package 'com.technoelevate.user_service.exception'
+1657005053752	Rename package 'com.technoelevate.user_service.handler'
+1657005068772	Rename package 'com.technoelevate.user_service.repository'
+1657005088064	Rename package 'com.technoelevate.user_service.response'
+1657005102418	Rename package 'com.technoelevate.user_service.service'
+1657008098322	Rename type 'User'
+1657008317859	Rename type 'UserService'
+1657008333541	Rename type 'UserServiceImpl'
+1657008376123	Rename type 'UserDto'
+1657008473450	Rename type 'UserRepository'
+1657008574528	Rename type 'UserResponse'
+1657013004733	Rename type 'OderService'
+1657017596162	Rename type 'UserController'
+1657023459583	Delete elements
+1657023465758	Delete elements
+1657023471349	Delete elements
+1657023478173	Delete elements
+1657023485956	Delete elements
+1657023494848	Delete elements
+1657023505014	Delete elements
+1657023511907	Delete elements
+1657023603711	Delete elements
+1657023616722	Rename type 'PermissionConstant'
+1657023631949	Rename type 'PermissionException'
+1657023646888	Rename type 'PermissionHandler'
+1657075809431	Copy packages
+1657179745650	Rename package 'com.technoelevate.user_service.config'
+1657179772001	Rename package 'com.technoelevate.user_service.exception'
+1657179782426	Delete element
+1657179788978	Rename package 'com.technoelevate.order_service.exception1'
+1657179800689	Rename package 'com.technoelevate.user_service.filter'
+1657179842276	Rename package 'com.technoelevate.user_service.security'
+1657179877381	Rename package 'com.technoelevate.user_service.util'
+1657181168138	Rename type 'UserFeign'
+1657190297237	Copy compilation unit
+1657258695314	Copy file

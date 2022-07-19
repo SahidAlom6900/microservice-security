@@ -1,0 +1,36 @@
+package com.technoelevate.kafka.producer.controller;
+
+import java.sql.Timestamp;
+
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.kafka.producer.dto.EmployeeDto;
+
+@RestController
+@RequestMapping("api/v1/kafka")
+public class KafkaProducerController {
+
+	@Autowired
+	private KafkaTemplate<String, Object> kafkaTemplate;
+
+	@PostMapping("employee")
+	public void sendMessage() {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		EmployeeDto employee = EmployeeDto.builder().contact(123456789l).email("sahid@gmail.com").empId("1234TYC")
+				.name("Sahid Alom").build();
+		kafkaTemplate.send("topic", 1, timestamp.getTime(), employee.getEmpId(), employee);
+		// topicName,partition,long time,key and object //
+	}
+
+	@PostMapping("topic")
+	public NewTopic createTopic() {
+		return TopicBuilder.name("employee-topic0").partitions(3).replicas(3).build();
+	}
+
+}

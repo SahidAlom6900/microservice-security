@@ -1,0 +1,38 @@
+package com.technoelevate.user_service.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.technoelevate.user_service.exception.CustomAccessDeniedException;
+import com.technoelevate.user_service.filter.CustomAuthorizationFilter;
+import com.technoelevate.user_service.util.JwtUtils;
+
+@Order(1000)
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private JwtUtils jwtUtils;
+
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		CustomAuthorizationFilter authorizationFilter = new CustomAuthorizationFilter(new CustomAccessDeniedException(),
+				jwtUtils);
+		http.csrf().disable();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/api/v1/auth").permitAll();
+		http.authorizeRequests().anyRequest().authenticated();
+		http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+	
+}

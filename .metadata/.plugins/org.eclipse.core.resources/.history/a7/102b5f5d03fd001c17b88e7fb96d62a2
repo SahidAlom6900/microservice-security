@@ -1,0 +1,83 @@
+package com.technoelevate.auth.util;
+
+import java.security.Key;
+import java.security.SignatureException;
+import java.time.Instant;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import javax.crypto.spec.SecretKeySpec;
+
+import org.bouncycastle.jcajce.BCFKSLoadStoreParameter.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+
+//@Component
+public class JwtUtils {
+	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+
+	@Value("${auth.app.jwt-secret: qwerty}")
+	private String jwtSecret;
+
+	@Value("${auth.app.jwt-expiration-ms: 86400000}") // 24*60*60*1000
+	private int jwtExpirationMs;
+
+	@Value("${auth.app.jwt-refresh-ms: 1296000000}") // 15*24*60*60*1000
+	private int jwtRefreshMs;
+
+	@Value("${auth.app.jwt-not-before-ms: 3000}") // 3*1000
+	private int jwtNotBefore;
+
+	public String[] generateJwtToken(String username, Collection<GrantedAuthority> authorities) {
+
+		final Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(jwtSecret),
+				SignatureAlgorithm.HS512.getJcaName());
+		String accessToken = Jwts.builder()
+				.claim("roles", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+				.setIssuer("Technoelevate Group").setSubject(username).setAudience("you")
+				.setExpiration(new Date(Date.from(Instant.now()).getTime() + jwtExpirationMs))
+				.setNotBefore(new Date(Date.from(Instant.now()).getTime() + jwtNotBefore))
+				.setIssuedAt(Date.from(Instant.now())).setHeaderParam("typ", "JWT").setId(UUID.randomUUID().toString())
+				.signWith(SignatureAlgorithm.HS512, hmacKey).compact();
+
+		String refreshToken = Jwts.builder().setSubject(username).setAudience("you")
+				.setExpiration(new Date(Date.from(Instant.now()).getTime() + jwtExpirationMs))
+				.setNotBefore(new Date(Date.from(Instant.now()).getTime() + jwtNotBefore))
+				.setIssuedAt(Date.from(Instant.now())).setHeaderParam("typ", "JWT").setId(UUID.randomUUID().toString())
+				.signWith(SignatureAlgorithm.HS512, hmacKey).compact();
+
+		return new String[] { accessToken, refreshToken };
+	}
+
+	public String getUserNameFromJwtToken(String token) {
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+	}
+
+	public boolean validateJwtToken(String authToken) {
+		try {
+			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+			return true;
+		} catch (SignatureException e) {
+			logger.error("Invalid JWT signature: {}", e.getMessage());
+		} catch (MalformedJwtException e) {
+			logger.error("Invalid JWT token: {}", e.getMessage());
+		} catch (ExpiredJwtException e) {
+			logger.error("JWT token is expired: {}", e.getMessage());
+		} catch (UnsupportedJwtException e) {
+			logger.error("JWT token is unsupported: {}", e.getMessage());
+		} catch (IllegalArgumentException e) {
+			logger.error("JWT claims string is empty: {}", e.getMessage());
+		}
+		return false;
+	}
+}

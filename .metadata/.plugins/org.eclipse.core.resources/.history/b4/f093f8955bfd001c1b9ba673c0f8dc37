@@ -1,0 +1,19 @@
+package com.technoelevate.user_service.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.technoelevate.order_service.response.RoleResponse;
+
+
+@FeignClient(name = "user-service",url = "http://localhost:8399/")
+public interface UserFeign {
+	
+	@PostMapping("api/v1/authentication/{username}/{password}")
+	public String generateTocken(@PathVariable(name = "username") String username,@PathVariable(name = "password") String password) ;
+
+
+}

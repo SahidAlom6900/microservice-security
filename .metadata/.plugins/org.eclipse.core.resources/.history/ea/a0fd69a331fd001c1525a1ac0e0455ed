@@ -1,0 +1,102 @@
+package com.technoelevate.user_service.util;
+
+import java.nio.charset.Charset;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+public class JwtUtils {
+
+	    private String secrete = "RostenRoss35689682_Nestor_Matias_Costantini_16/04/1991_programador-universitario_profesor-de-quimica";
+	    private String expireTimeInMilliSec="30000";
+
+	    public String generateToken(String username, Collection<GrantedAuthority> authorities) {
+	        Date now =new Date();
+	        Map<String, Object> claim = new HashMap<>();
+	        claim.put("alg", "HS256");
+	        claim.put("typ", "JWT");
+	        
+	        return Jwts.builder()
+	                .signWith(SignatureAlgorithm.HS256,Base64.getEncoder().encode(secrete.getBytes()))
+	                .setClaims(claim)
+	                .setSubject(username)
+	                .setId(UUID.randomUUID().toString())
+	                .setIssuedAt(now)
+	                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+	                .claim("roles", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+	                .compact();
+	    }
+	    
+	    public Claims getClaimsFromToken(String token) {
+	        return Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(secrete.getBytes()))
+	                .parseClaimsJws(token)
+	                .getBody();
+	    }
+	    
+	    public String getUsernameFromToken(String token) {
+	        return getClaimsFromToken(token).getSubject();
+	    }
+	    
+	    public Date getExpirationDate(String token) {
+	        return getClaimsFromToken(token).getExpiration();
+	    }
+	    
+	    public Boolean isTokenExpired(String token) {
+	        Date expirationDate = getExpirationDate(token);
+	        log.info("isTokenExpired: "+expirationDate.before(new Date()));
+	        return expirationDate.before(new Date());
+	    }
+	    
+	    public Boolean isTokenValidated(String token) {
+	        return !isTokenExpired(token);
+	    }
+
+//	@Value("${auth.app.jwt-secret: qwerty}")
+//	private String jwtSecret;
+//
+////	 Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(jwtSecret),
+////			SignatureAlgorithm.HS512.getJcaName());
+//
+//	public Claims getClaims(String token) {
+////		System.out.println(hmacKey);
+//return Jwts.parser().setSigningKey(jwtSecret.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token.replace("{", "").replace("}","")).getBody();
+//    
+////		return  Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(token).getBody();
+//	}
+//	
+//	public boolean validateJwtToken(String authToken) {
+//		try {
+//			System.out.println(authToken+"  authToken");
+//			Jwts.parser().setSigningKey(jwtSecret.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(authToken.replace("{", "").replace("}",""));
+////			Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(authToken);
+//			return true;
+//		} catch (MalformedJwtException e) {
+//			log.error("Invalid JWT token: {}", e.getMessage());
+//		} catch (ExpiredJwtException e) {
+//			log.error("JWT token is expired: {}", e.getMessage());
+//		} catch (UnsupportedJwtException e) {
+//			log.error("JWT token is unsupported: {}", e.getMessage());
+//		} catch (IllegalArgumentException e) {
+//			log.error("JWT claims string is empty: {}", e.getMessage());
+//		}
+//		return false;
+//	}
+}

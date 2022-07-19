@@ -1,0 +1,22 @@
+package com.technoelevate.user_service.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.technoelevate.user_service.entity.Role;
+import com.technoelevate.user_service.entity.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+	public List<User> findByEmpIdIn(List<Long> empIds);
+	
+	public User findByEmpId(Long empIds);
+	
+	public List<User> findByDepartment(Role department);
+
+	public List<User> findByDepartmentIn(List<Role> departments);
+
+}

@@ -1,0 +1,98 @@
+package com.technoelevate.kafka.producer.service;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
+import org.apache.kafka.clients.admin.ListTopicsResult;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.admin.TopicListing;
+import org.apache.kafka.common.KafkaFuture;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.stereotype.Service;
+
+import com.technoelevate.kafka.producer.dto.TopicDto;
+import com.technoelevate.kafka.producer.entity.Topic;
+
+@Service
+public class TopicCreationServiceImpl implements TopicCreationService {
+
+	@Value("${spring.kafka.producer.bootstrap-servers: localhost:9092,localhost:9093,localhost:9094}")
+	private String bootstrapServers;
+
+	@Override
+	public String crateTopic(Topic topic) {
+		try (AdminClient adminClient=getAdminClient();) {
+
+			NewTopic build = TopicBuilder.name(topic.getTopicName()).partitions(topic.getPartitions())
+					.replicas(topic.getReplicationFactor()).build();
+			List<NewTopic> topics = List.of(build);
+			adminClient.createTopics(topics);
+			ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
+			listTopicsOptions.listInternal(true);
+			System.out.println(adminClient.listTopics(listTopicsOptions).names().get());
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public Collection<TopicListing> getAllTopicWithDesc() {
+		try (AdminClient adminClient=getAdminClient();) {
+			ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
+			listTopicsOptions.listInternal(true);
+			ListTopicsResult listTopics = adminClient.listTopics(listTopicsOptions);
+//			KafkaFuture<Set<String>> kafkaFuture = listTopics.names();
+//			for (iterable_type iterable_element : kafkaFuture) {
+//				
+//			}
+			 Collection<TopicListing> collection = listTopics.listings().get();
+			
+			
+			
+			
+			System.out.println(collection);
+			return collection;
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+
+
+	@Override
+	public TopicDto getTopicWithDesc(String topicName) {
+		try (AdminClient adminClient=getAdminClient();) {
+
+			ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
+			listTopicsOptions.listInternal(true);
+			System.out.println(adminClient.listTopics(listTopicsOptions).names().get());
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+
+	private AdminClient getAdminClient() {
+		Properties properties = new Properties();
+		properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		return AdminClient.create(properties);
+	}
+
+
+
+
+
+
+}

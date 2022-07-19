@@ -1,0 +1,23 @@
+package com.technoelevate.user_service.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+
+import com.technoelevate.user_service.filter.CustomAuthorizationFilter;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+
+@Configuration
+public class UserRequestIntercentor implements RequestInterceptor {
+
+	@Autowired
+	private CustomAuthorizationFilter authorizationFilter;
+
+	@Override
+	public void apply(RequestTemplate template) {
+		String token = authorizationFilter.getToken();
+		template.header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+	}
+}

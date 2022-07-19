@@ -1,0 +1,54 @@
+package com.technoelevate.kafka.producer.controller;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.kafka.producer.dto.EmployeeDto;
+import com.technoelevate.kafka.producer.dto.TopicDetailsDto;
+import com.technoelevate.kafka.producer.entity.Topic;
+import com.technoelevate.kafka.producer.service.TopicCreationService;
+
+@RestController
+@RequestMapping("api/v1/kafka")
+public class KafkaProducerController {
+
+	@Autowired
+	private TopicCreationService creationService;
+
+	@Autowired
+	private KafkaTemplate<String, Object> kafkaTemplate;
+
+	@PostMapping("employee")
+	public void sendMessage() {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		EmployeeDto employee = EmployeeDto.builder().contact(123456789l).email("sahid@gmail.com").empId("1234TYC")
+				.name("Sahid Alom").build();
+		kafkaTemplate.send("employee-topic001", 1, timestamp.getTime(), employee.getEmpId(), employee);
+		// topicName,partition,long time,key and object //
+	}
+
+	@PostMapping("topic")
+	public TopicDetailsDto createTopic(@RequestBody Topic topic) {
+		return creationService.crateTopic(topic);
+	}
+	
+	@GetMapping("topic")
+	public List<TopicDetailsDto> getAllTopicWithDesc() {
+		return creationService.getAllTopicWithDesc();
+	}
+
+	@GetMapping("topic/{topicName}")
+	public TopicDetailsDto getTopicWithDesc(@PathVariable(name = "topicName") String topicName) {
+		return creationService.getTopicWithDesc(topicName);
+	}
+
+}

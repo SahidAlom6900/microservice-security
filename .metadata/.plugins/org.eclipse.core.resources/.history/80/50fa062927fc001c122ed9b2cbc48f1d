@@ -1,0 +1,43 @@
+package com.technoelevate.user_service.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.technoelevate.user_service.dto.RoleDto;
+import com.technoelevate.user_service.repository.PermissionRepository;
+import com.technoelevate.user_service.repository.RoleRepository;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class RoleServiceImpl implements RoleService {
+
+	private RoleRepository roleRepository;
+
+	private PermissionRepository permissionRepository;
+
+	@Override
+	public RoleDto createOrUpdateRole(List<RoleDto> RoleDtos) {
+		
+		return null;
+	}
+
+
+	@Override
+	public RoleDto getRole(Long empId) {
+		return null;
+	}
+
+	@Override
+	public boolean delete(Long empId) {
+		return false;
+	}
+
+	@Override
+	public List<RoleDto> getAllRole() {
+		return null;
+	}
+
+}

@@ -1,0 +1,28 @@
+package com.technoelevate.inventory.dto;
+
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@SuppressWarnings("serial")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@JsonInclude(value = Include.NON_DEFAULT)
+public class ProductDto implements Serializable{
+	
+	private long productId;
+
+	private double unitPrice;
+	
+	private double discount;
+
+	private long productCount;
+	
+}

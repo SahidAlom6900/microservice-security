@@ -1,0 +1,40 @@
+
+
+
+server:
+  port: 8700
+  
+spring:
+  application:
+    name: api-gateway-server
+  config:
+    import: "optional:configserver:"
+    
+    
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: user-service-8050
+        uri: lb://user-service/
+        predicates:
+        - Path=/api/v1/user/**
+        filters:
+#            - RewritePath=/api/v1/user/(?<path>/?.*), /${path}
+            - name: CircuitBreaker
+              args:
+                name: user-service
+#                fallbackuri: forward:/userFallBack/user    
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost

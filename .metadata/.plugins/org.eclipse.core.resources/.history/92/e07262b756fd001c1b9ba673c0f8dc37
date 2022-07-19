@@ -1,0 +1,8 @@
+package com.technoelevate.user_service.config;
+
+public class UserRequestIntercentor {
+
+	public RequeInter requestInterceptor() {
+		
+	}
+}

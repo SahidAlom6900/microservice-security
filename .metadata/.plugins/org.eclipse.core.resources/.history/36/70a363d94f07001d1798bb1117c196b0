@@ -1,0 +1,81 @@
+package com.technoelevate.kafka.producer.controller;
+
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.kafka.producer.dto.EmployeeDto;
+import com.technoelevate.kafka.producer.dto.TopicDetailsDto;
+import com.technoelevate.kafka.producer.entity.Topic;
+import com.technoelevate.kafka.producer.response.TopicResponse;
+import com.technoelevate.kafka.producer.service.TopicCreationService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("api/v1/kafka")
+@Slf4j
+public class KafkaTopicController {
+
+	@Autowired
+	private TopicCreationService creationService;
+
+	@Autowired
+	private KafkaTemplate<String, Object> kafkaTemplate;
+
+	@PostMapping("employee")
+	public void sendMessage() {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		EmployeeDto employee = EmployeeDto.builder().contact(123456789l).email("sahid@gmail.com").empId("1234TYC")
+				.name("Sahid Alom").build();
+		ListenableFuture<SendResult<String, Object>> listenableFuture = kafkaTemplate.send("employee-topic001", 1,
+				timestamp.getTime(), employee.getEmpId(), employee);
+		// topicName,partition,long time,key and object //
+
+		listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+
+			@Override
+			public void onSuccess(SendResult<String, Object> result) {
+				log.info("message sent, partition={}, offset={}", result.getRecordMetadata().partition(),
+						result.getRecordMetadata().offset());
+			}
+
+			@Override
+			public void onFailure(Throwable throwable) {
+				log.warn("failed to send, message={}", employee, throwable);
+			}
+		});
+
+	}
+
+	@PostMapping("topic")
+	public ResponseEntity<TopicResponse> createTopic(@RequestBody Topic topic) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(TopicResponse.builder().error(false).message(creationService.crateTopic(topic)).build());
+	}
+
+	@GetMapping("topic")
+	public List<TopicDetailsDto> getAllTopicWithDesc() {
+		return creationService.getAllTopicWithDesc();
+	}
+
+	@GetMapping("topic/{topicName}")
+	public TopicDetailsDto getTopicWithDesc(@PathVariable(name = "topicName") String topicName) {
+		return creationService.getTopicWithDesc(topicName);
+	}
+
+}

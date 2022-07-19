@@ -1,0 +1,67 @@
+package com.technoelevate.user_service.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.user_service.dto.UserDto;
+import com.technoelevate.user_service.response.RoleResponse;
+import com.technoelevate.user_service.service.UserService;
+
+@RestController
+@RequestMapping(value = "/api/v1")
+public class UserController {
+
+	@Autowired
+	private UserService userService;
+
+	@PreAuthorize("hasAuthority('create')")
+	@PostMapping(path = "user")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<RoleResponse> createDepartment(@RequestBody UserDto userDto) {
+		return ResponseEntity
+				.ok(RoleResponse.builder().error(false).message("").data(userService.createOrUpdate(userDto)).build());
+	}
+
+	@PreAuthorize("hasAuthority('read')")
+	@GetMapping(path = "user/{userId}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<RoleResponse> getUser(@PathVariable(name = "userId") Long userId) {
+		return ResponseEntity
+				.ok(RoleResponse.builder().error(false).message("").data(userService.getUser(userId)).build());
+	}
+
+	@PreAuthorize("hasAuthority('delete')")
+	@DeleteMapping(path = "user/{userId}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<RoleResponse> deleteDepartment(@PathVariable(name = "userId") Long userId) {
+		return ResponseEntity
+				.ok(RoleResponse.builder().error(false).message("").data(userService.delete(userId)).build());
+	}
+
+	@PreAuthorize("hasAuthority('read')")
+	@GetMapping(path = "users")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<RoleResponse> getAllUser() {
+		return ResponseEntity
+				.ok(RoleResponse.builder().error(false).message("").data(userService.getAllUser()).build());
+	}
+
+	@PreAuthorize("hasAuthority('read')")
+	@GetMapping(path = "user")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<RoleResponse> getLoggedInUser() {
+		return ResponseEntity
+				.ok(RoleResponse.builder().error(false).message("").data(userService.getLoggedInUser()).build());
+	}
+
+}

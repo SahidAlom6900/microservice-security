@@ -1,0 +1,7 @@
+
+t
+java:S2166"CRename this class to remove "Exception" or correct its inheritance.(õ©ÂµûÿÿÿÿHÙeRMAJORZ
+CODE_SMELL
+s
+java:S2094"BRemove this empty class, write its code or make it an "interface".(õ©ÂµûÿÿÿÿHÚeRMINORZ
+CODE_SMELL

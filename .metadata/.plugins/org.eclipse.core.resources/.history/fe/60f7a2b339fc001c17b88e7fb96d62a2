@@ -1,0 +1,35 @@
+package com.technoelevate.order_service.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@SuppressWarnings("serial")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@JsonInclude(value = Include.NON_DEFAULT)
+public class OrderDto implements Serializable{
+	
+	private Long id;
+
+	private Long orderId;
+
+	private Long productId;
+
+	private Double unitPrice;
+	
+	private Long quentity;
+	
+	private Double discount;
+	
+	private Double totalPrice;
+}

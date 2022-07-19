@@ -1,0 +1,29 @@
+
+server:
+  port: 8761
+  
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    wait-time-in-ms-when-sync-empty: 0   
+    peer-node-read-timeout-ms: 25000
+    
+logging:
+#  pattern:
+#    file: %d [%thread] %cyan(%logger{15}) - %msg %n
+  file:
+    name: C:/Users/User/Documents/LogFile/eureka-server-log.log 
+  level:
+    root: WARN
+    org:
+      hibernate: ERROR   
+    com:
+      technoelevate:
+        eureka: INFO 
+        
+        
+        
+        
+           

@@ -1,0 +1,142 @@
+package com.technoelevate.user_service.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.technoelevate.user_service.dto.UserDto;
+import com.technoelevate.user_service.repository.PermissionRepository;
+import com.technoelevate.user_service.repository.RoleRepository;
+import com.technoelevate.user_service.repository.UserRepository;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class RoleServiceImpl implements RoleService {
+
+	private RoleRepository departmentRepository;
+
+	private UserRepository employeeRepository;
+	
+	private PermissionRepository permissionRepository;
+
+	@Override
+	public UserDto create(UserDto userDto) {
+		
+		return null;
+	}
+
+	@Override
+	public UserDto update(UserDto departmentDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDto delete(Long deptId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDto getDepartment(Long deptId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<UserDto> getAllDepartment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	public UserDto create(UserDto departmentDto) {
+//		List<Long> empIds = departmentDto.getEmployeeDtos() == null ? Collections.emptyList()
+//				: departmentDto.getEmployeeDtos().stream().filter(emp -> emp.getEmpId() != null)
+//						.map(RoleDto::getEmpId).collect(Collectors.toList());
+//
+//		List<User> employees = empIds.isEmpty() ? Collections.emptyList()
+//				: employeeRepository.findByEmpIdIn(empIds);
+//
+//		Role department = departmentDto.getDeptId() == null
+//				? Role.builder().deptName(departmentDto.getDeptName()).build()
+//				: departmentRepository.findById(departmentDto.getDeptId())
+//						.orElse(Role.builder().deptName(departmentDto.getDeptName()).build());
+//		if (!employees.isEmpty())
+//			department.setEmployee(employees);
+//
+//		Role department2 = departmentRepository.save(department);
+//		employees.stream().forEach(emp -> emp.setDepartment(department2));
+//		List<User> employeeList = employeeRepository.saveAll(employees);
+//
+//		List<RoleDto> employeeDtos = employeeList.stream().map(emp -> RoleDto.builder()
+//				.firstName(emp.getFirstName()).lastName(emp.getLastName()).gender(emp.getGender()).build())
+//				.collect(Collectors.toList());
+//
+//		return UserDto.builder().deptName(department2.getDeptName()).employeeDtos(employeeDtos).build();
+//	}
+//
+//	public UserDto update(UserDto departmentDto) {
+//
+//		Role department = departmentRepository.findById(departmentDto.getDeptId())
+//				.orElse(Role.builder().deptName(departmentDto.getDeptName()).build());
+//		List<User> employees = departmentDto.getEmployeeDtos().stream()
+//				.map(employee -> employeeRepository.findByEmpId(employee.getEmpId())).filter(emp -> emp != null)
+//				.map(emp -> {
+//					emp.setDepartment(department);
+//					return emp;
+//				}).collect(Collectors.toList());
+//		department.setEmployee(employees);
+//		if (departmentDto.getDeptName() == null)
+//			departmentDto.setDeptName(department.getDeptName());
+//		BeanUtils.copyProperties(departmentDto, department);
+//		Role dept = departmentRepository.save(department);
+//		return getDept(dept, employees);
+//	}
+//
+//	private UserDto getDept(Role department, List<User> employees) {
+//		RoleDto employeeDto = RoleDto.builder().build();
+//		UserDto departmentDto = UserDto.builder().build();
+//		if (department != null) {
+//			if (!employees.isEmpty()) {
+//				List<RoleDto> empList = employees.stream().filter(emp1 -> emp1.getDepartment() != null)
+//						.filter(emp -> emp.getDepartment().getDeptId().equals(department.getDeptId())).map(employee -> {
+//							BeanUtils.copyProperties(employee, employeeDto);
+//							return employeeDto;
+//						}).collect(Collectors.toList());
+//				departmentDto.setEmployeeDtos(empList);
+//			}
+//			BeanUtils.copyProperties(department, departmentDto);
+//		}
+//		return departmentDto;
+//	}
+//
+//	public UserDto delete(Long deptId) {
+//		Role department = departmentRepository.findById(deptId).orElseThrow(IllegalStateException::new);
+//
+//		List<User> employees = employeeRepository.findByDepartment(department).stream().map(emp -> {
+//			emp.setDepartment(null);
+//			return emp;
+//		}).collect(Collectors.toList());
+//
+//		employeeRepository.saveAll(employees);
+//
+//		departmentRepository.delete(department);
+//
+//		return getDept(department, employees);
+//	}
+//
+//	public UserDto getDepartment(Long deptId) {
+//		Role department = departmentRepository.findById(deptId).orElseThrow(IllegalStateException::new);
+//		return getDept(department, department.getEmployee());
+//	}
+//
+//	public List<UserDto> getAllDepartment() {
+//		List<Role> departments = departmentRepository.findAll();
+//		List<User> emp = employeeRepository.findByDepartmentIn(departments);
+//		return departments.isEmpty() ? Collections.emptyList()
+//				: departments.stream().map(dept -> getDept(dept, emp)).collect(Collectors.toList());
+//	}
+
+}

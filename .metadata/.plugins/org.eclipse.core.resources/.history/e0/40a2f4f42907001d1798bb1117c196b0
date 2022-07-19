@@ -1,0 +1,11 @@
+package com.technoelevate.kafka.consumer.constant;
+
+public class ConsumerConstants {
+	
+	private ConsumerConstants() {
+	}
+
+	public static final String TOPIC_NAME = "kafka-topic";
+	public static final String[] TOPIC_NAMES = {"kafka-topic","test-topic"};
+	public static final String GROUP_ID = "group-id";
+}

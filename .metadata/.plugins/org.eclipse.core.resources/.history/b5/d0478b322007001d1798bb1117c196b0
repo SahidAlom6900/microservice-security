@@ -1,0 +1,44 @@
+package com.technoelevate.kafka.producer.controller;
+
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.technoelevate.kafka.producer.dto.EmployeeDto;
+import com.technoelevate.kafka.producer.dto.TopicDetailsDto;
+import com.technoelevate.kafka.producer.entity.Topic;
+import com.technoelevate.kafka.producer.response.TopicResponse;
+import com.technoelevate.kafka.producer.service.ProducerService;
+import com.technoelevate.kafka.producer.service.TopicCreationService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("api/v1/kafka/producer")
+@Slf4j
+public class KafkaProducerController {
+
+	@Autowired
+	private ProducerService creationService;
+
+	@PostMapping("employee")
+	public void sendMessage() {
+		
+
+	}
+
+}

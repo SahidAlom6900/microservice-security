@@ -1,0 +1,7 @@
+1658051889861	Rename package 'com.technoelevate.kafka.producer.config'
+1658051912105	Rename type 'KafkaProducerConfig'
+1658123316381	Copy package
+1658123981621	Rename resource 'application.properties'
+1658124151458	Copy file
+1658124524928	Rename package 'com.technoelevate.kafka.producer.constant'
+1658211003701	Rename type 'AppConstants'

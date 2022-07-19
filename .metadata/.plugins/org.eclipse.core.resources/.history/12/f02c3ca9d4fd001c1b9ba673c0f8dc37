@@ -1,0 +1,5 @@
+package com.technoelevate.inventory.controller;
+
+public class ProductResponse {
+
+}

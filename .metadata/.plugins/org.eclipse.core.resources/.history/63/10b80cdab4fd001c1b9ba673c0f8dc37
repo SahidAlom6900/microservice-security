@@ -1,0 +1,90 @@
+package com.technoelevate.auth.filter;
+
+import java.io.IOException;
+import java.util.LinkedHashMap;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.technoelevate.auth.exception.CustomAccessDeniedException;
+import com.technoelevate.auth.util.JwtUtils;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
+public class CustomAuthenticattionFilter extends UsernamePasswordAuthenticationFilter {
+	
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private CustomAccessDeniedException accessDenied;
+
+	@Autowired
+	private JwtUtils jwtUtils;
+
+
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		log.info("Username is :" + username);
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+				password);
+		Authentication authenticate = null;
+		try {
+			authenticate = authenticationManager.authenticate(authenticationToken);
+			log.info("Authentication Successfully!!!");
+		} catch (Exception exception) {
+			try {
+				log.error(exception.getMessage());
+				accessDenied.handle(request, response, new AccessDeniedException(exception.getMessage()));
+			} catch (Exception exception2) {
+				log.error(exception2.getMessage());
+			}
+		}
+		return authenticate;
+	}
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authentication) throws IOException, ServletException {
+		User user = (User) authentication.getPrincipal();
+		String[] token = jwtUtils.generateToken(user.getUsername(), user.getAuthorities());
+		log.info("Generate access token And refresh token!!!");
+		LinkedHashMap<String, Object> infomation = new LinkedHashMap<>();
+		LinkedHashMap<String, Object> tokens = new LinkedHashMap<>();
+		infomation.put("error", false);
+		infomation.put("message", "Successfully Login " + user.getUsername());
+		log.info("Successfully Login " + user.getUsername());
+		tokens.put("access_token", token[0]);
+		tokens.put("refresh_token", token[1]);
+		infomation.put("data", tokens);
+		log.info("Generate access token And refresh token Successfully");
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		new ObjectMapper().writeValue(response.getOutputStream(), infomation);
+	}
+	
+	@Override
+	@Autowired
+	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+	    super.setAuthenticationManager(authenticationManager);
+	}
+
+}

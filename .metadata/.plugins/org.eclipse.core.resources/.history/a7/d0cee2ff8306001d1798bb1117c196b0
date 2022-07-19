@@ -1,0 +1,26 @@
+package com.technoelevate.kafka.consumer.listener;
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+@Component
+@Slf4j
+public class KafkaListeners {
+	@KafkaListener(topicPartitions = @TopicPartition(topic = "topic", partitionOffsets = {
+			@PartitionOffset(partition = "1", initialOffset = "0") }), groupId = "group-id")
+	void listenToParitionWithOffset(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+			@Header(KafkaHeaders.OFFSET) int offset) {
+		log.info("ListenToPartitionWithOffset [{}] from partition-{} with offset-{}", message, partition, offset);
+	}
+	
+	@KafkaListener(topics = "topic")
+	void listenerForRoutingTemplate(String message) {
+		log.info("RoutingTemplate BytesListener [{}]", message);
+	}
+}

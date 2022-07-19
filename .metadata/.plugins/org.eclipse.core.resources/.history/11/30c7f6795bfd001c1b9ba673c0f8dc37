@@ -1,0 +1,18 @@
+package com.technoelevate.user_service.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.technoelevate.order_service.response.RoleResponse;
+
+
+@FeignClient(name = "user-service",url = "http://localhost:9090/")
+public interface UserFeign {
+	
+	@GetMapping(path = "api/v1/user-name/{username}")
+	public ResponseEntity<RoleResponse> getUserName(@PathVariable(name = "username") String username);
+
+
+}

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: auth-service
+    
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_servive?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        format-sql: true
+        dialect : org.hibernate.dialect.MySQL5InnoDBDialect 
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8399
+  
+
+
+
+
+
+# App Properties
+auth.app:
+    jwt-secret: qwerty
+    jwt-expiration-ms: 3000 #24*60*60*1000
+    jwt-refresh-ms: 1296000000  #15*24*60*60*1000
+    jwt-not-before-ms: 3000     #3*1000

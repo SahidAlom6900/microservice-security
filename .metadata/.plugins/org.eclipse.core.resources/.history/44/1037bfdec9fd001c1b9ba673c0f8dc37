@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "spring.cloud.loadbalancer.ribbon.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cloud.loadbalancer.ribbon.enable'"
+  },
+  {
+    "name": "logging.jackson.mapper.default-view-inclusion",
+    "type": "java.lang.String",
+    "description": "A description for 'logging.jackson.mapper.default-view-inclusion'"
+  },
+  {
+    "name": "logging.jackson.serialization.write-date-keys-as-timestamps",
+    "type": "java.lang.String",
+    "description": "A description for 'logging.jackson.serialization.write-date-keys-as-timestamps'"
+  },
+  {
+    "name": "auth.app.jwt-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'auth.app.jwt-secret'"
+  },
+  {
+    "name": "auth.app.jwt-expiration-ms",
+    "type": "java.lang.String",
+    "description": "A description for 'auth.app.jwt-expiration-ms'"
+  }
+]}

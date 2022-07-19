@@ -1,0 +1,29 @@
+package com.technoelevate.order_service.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.technoelevate.order_service.filter.CustomAuthorizationFilter;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+
+@Configuration
+public class UserRequestIntercentor implements RequestInterceptor {
+
+	@Autowired
+	private CustomAuthorizationFilter authorizationFilter;
+
+	@Override
+	public void apply(RequestTemplate template) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = (principal instanceof UserDetails) ? ((UserDetails) principal).getUsername()
+				: principal.toString();
+		System.out.println("UserRequestIntercentor : "+username);
+		String token = authorizationFilter.getToken();
+		template.header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+	}
+}

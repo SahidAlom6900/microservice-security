@@ -1,0 +1,84 @@
+server:
+  port: 9090
+  
+spring:
+  application:
+    name: USER-SERVICE
+  config:
+    import: "optional:configserver:"    
+    
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_servive?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        format-sql: true
+        dialect : org.hibernate.dialect.MySQL5InnoDBDialect 
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      
+logging:
+#  pattern:
+#    file: %d [%thread] %cyan(%logger{15}) - %msg %n
+  file:
+    name: C:/Users/User/Documents/LogFile/mylog.log 
+  level:
+    root: WARN
+    org:
+      hibernate: ERROR   
+    com:
+      technoelevate:
+        user_service: INFO
+         
+      
+#  cache:
+#    type: redis
+#  redis:
+#    host: localhost
+#    port: 6379
+#    jedis:
+#      pool:
+#        max-active: 16
+#        max-idle: 8
+#        min-idle: 4   
+        
+#spring.jackson.serialization.write-dates-as-timestamps=false         
+        
+  jackson:
+    mapper:
+      default-view-inclusion: true
+    serialization:
+      write-date-keys-as-timestamps: false 
+ 
+# Feign
+feign:
+
+  # Client
+  client:
+    config:
+      exchange-rate:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+#        errorDecoder: com.arch.ExchangeRateClientErrorDecoder
+#        requestInterceptors:
+#          - com.arch.ExchangeRateClientInterceptor
+
+  # Compression
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true       
+       
+auth.app:
+    jwt-secret: qwerty
+    jwt-expiration-ms: 86400000 #24*60*60*1000
+    jwt-refresh-ms: 1296000000  #15*24*60*60*1000
+    jwt-not-before-ms: 3000     #3*1000             
+
+
+          

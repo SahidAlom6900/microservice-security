@@ -1,0 +1,17 @@
+package com.technoelevate.order_service.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.technoelevate.order_service.response.RoleResponse;
+
+
+@FeignClient(name = "order-service",url = "http://localhost:9090/")
+public interface UserOrderFeign {
+	
+	@GetMapping(path = "api/v1/user")
+	public ResponseEntity<RoleResponse> getLoggedInUser();
+
+
+}

@@ -1,0 +1,18 @@
+package com.technoelevate.order_service.service;
+
+import java.util.List;
+
+import com.technoelevate.order_service.dto.OrderDto;
+import com.technoelevate.order_service.entity.Product;
+
+public interface OrderService {
+
+	public List<Product> addOrUpdateProduct(List<OrderDto> orderDtos);
+	
+	public Product getProduct(Long deptId);
+	
+	public List<Product> getAllProduct();
+	
+	public Product deleteProduct(Long deptId);
+	
+}
